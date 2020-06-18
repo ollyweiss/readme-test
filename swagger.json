@@ -4,7 +4,7 @@
     "version": "1.0",
     "title": "Orders API"
   },
-  "basePath": "//",
+  "basePath": "",
   "tags": [{
     "name": "Orders",
     "x-api-name": "orders"
