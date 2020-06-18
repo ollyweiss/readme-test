@@ -65,6 +65,12 @@
               "FULFILLED",
               "CANCELED"
             ]
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
