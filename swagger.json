@@ -1753,6 +1753,18 @@
         }
       },
       "x-model-type": "builder"
+    },
+    "MonetaryAmount": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer"
+        }
+      },
+      "x-model-type": "builder"
     }
   }
 }
