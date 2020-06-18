@@ -70,7 +70,8 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "default": "Bearer: your-API-key"
           }
         ],
         "responses": {
