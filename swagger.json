@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0",
-    "title": "Orders API"
+    "title": "Public API"
   },
   "host": "api.squarespace.com",
   "tags": [{
