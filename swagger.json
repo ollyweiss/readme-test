@@ -1829,9 +1829,9 @@
       "enum": ["PHYSICAL_PRODUCT", "CUSTOM"]
     },
     "CreateOrderShipmentRequest": {
+      "required": ["shipDate"],
       "properties": {
         "shipDate": {
-          "required": true,
           "type": "string",
           "format": "date-time",
           "description": "ISO 8601 UTC date and time string. Represents the moment the shipment occurred."
