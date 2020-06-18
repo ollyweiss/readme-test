@@ -216,7 +216,7 @@
           }
         },
         "pagination": {
-          "$ref": "#/definitions/#PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         }
       },
       "x-model-type": "builder"
