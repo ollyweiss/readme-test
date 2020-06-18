@@ -71,7 +71,7 @@
             "in": "header",
             "required": true,
             "type": "string",
-            "default": "Bearer: your-API-key"
+            "description": "Bearer {your-API-key}"
           }
         ],
         "responses": {
