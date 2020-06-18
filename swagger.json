@@ -1466,19 +1466,7 @@
       "x-model-type": "builder"
     },
     "PaginationDetails": {
-      "type": "object",
-      "properties": {
-        "nextPageUrl": {
-          "type": "string"
-        },
-        "nextPageCursor": {
-          "type": "string"
-        },
-        "hasNextPage": {
-          "type": "boolean"
-        }
-      },
-      "x-model-type": "builder"
+      "type": "string"
     },
     "OrderFulfillmentRequest": {
       "properties": {
