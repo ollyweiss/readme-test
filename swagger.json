@@ -6,9 +6,16 @@
   },
   "host": "api.squarespace.com",
   "tags": [{
+    "name": "Inventory",
+    "x-api-name": "inventory"
+  }, {
     "name": "Orders",
     "x-api-name": "orders"
-  }],
+  }, {
+    "name": "Transactions",
+    "x-api-name": "transactions"
+  }
+  ],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
@@ -139,6 +146,160 @@
           }
         },
         "x-event-name": "OrdersApi_FulfillOrder"
+      }
+    },
+    "/{version}/commerce/inventory": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get information on the inventory stock levels for all variants, paginated",
+        "description": "Get information on the inventory stock levels for all variants, paginated",
+        "operationId": "getInventoryItems",
+        "parameters": [{
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "cursor",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedInventoryItemListResponse"
+            }
+          }
+        },
+        "x-event-name": "InventoryApi_GetInventoryItems"
+      }
+    },
+    "/{version}/commerce/inventory/{variantIdCsvs}": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get information on the inventory stock levels for one or more variants.",
+        "description": "Get information on the inventory stock levels for one or more variants.",
+        "operationId": "getSpecificInventoryItems",
+        "parameters": [{
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "variantIdCsvs",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InventoryItemListResponse"
+            }
+          }
+        },
+        "x-event-name": "InventoryApi_GetSpecificInventoryItems"
+      }
+    },
+    "/{version}/commerce/inventory/adjustments": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Adjust stock levels on inventory items using relative operations (e.g. increments) or absolute operations (set to this level, set as unlimited).",
+        "description": "Adjust stock levels on inventory items using relative operations (e.g. increments) or absolute operations (set to this level, set as unlimited).",
+        "operationId": "adjustInventoryStockLevels",
+        "parameters": [{
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": false,
+          "type": "string"
+        }, {
+          "in": "body",
+          "name": "adjustmentRequest",
+          "required": false,
+          "schema": {
+            "$ref": "#/definitions/CreateInventoryAdjustmentRequest"
+          }
+        }],
+        "responses": {
+          "204": {
+            "description": "The request was successfully processed."
+          }
+        },
+        "x-event-name": "InventoryApi_AdjustInventoryStockLevels"
+      }
+    },
+    "/{version}/commerce/transactions/{documentIds}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get transaction document by specified ids",
+        "description": "Get transaction documents by specified ids.",
+        "operationId": "getDocumentsById",
+        "parameters": [{
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "documentIds",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TransactionListResponse"
+            }
+          }
+        },
+        "x-event-name": "TransactionsApi_GetDocumentsByID"
+      }
+    },
+    "/{version}/commerce/transactions": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Search transaction documents by updated On",
+        "description": "Paginated search for transaction documents updated between the specified dates",
+        "operationId": "getDocumentsByUpdatedOn",
+        "parameters": [{
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }, {
+          "name": "cursor",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }, {
+          "name": "modifiedAfter",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }, {
+          "name": "modifiedBefore",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedTransactionListResponse"
+            }
+          }
+        },
+        "x-event-name": "TransactionsApi_GetDocumentsByUpdatedOn"
       }
     }
   },
