@@ -1,222 +1,1758 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "Swagger Petstore",
-    "description": "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
-    "termsOfService": "http://swagger.io/terms/",
-    "contact": {
-      "name": "Swagger API Team"
-    },
-    "license": {
-      "name": "MIT"
-    }
+    "version": "1.0",
+    "title": "Orders API"
   },
-  "host": "petstore.swagger.io",
-  "basePath": "/api",
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "basePath": "//",
+  "tags": [{
+    "name": "Orders",
+    "x-api-name": "orders"
+  }],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
-    "/pets": {
+    "/{version}/commerce/orders": {
       "get": {
-        "description": "Returns all pets from the system that the user has access to",
-        "operationId": "findPets",
-        "produces": [
-          "application/json",
-          "application/xml",
-          "text/xml",
-          "text/html"
+        "tags": [
+          "Orders"
         ],
+        "summary": "List Orders",
+        "description": "List Orders, sorted by their modifiedOn date in reverse chronological order",
+        "operationId": "getOrders",
         "parameters": [
           {
-            "name": "tags",
-            "in": "query",
-            "description": "tags to filter by",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "csv"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "maximum number of results to return",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "pet response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Pet"
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new pet in the store.  Duplicates are allowed",
-        "operationId": "addPet",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "pet",
-            "in": "body",
-            "description": "Pet to add to the store",
+            "name": "version",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewPet"
-            }
+            "type": "string"
+          },
+          {
+            "name": "modifiedAfter",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "modifiedBefore",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "maxLength": 25
+          },
+          {
+            "name": "fulfillmentStatus",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "FULFILLED",
+              "CANCELED"
+            ]
           }
         ],
         "responses": {
           "200": {
-            "description": "pet response",
+            "description": "Return a list of Orders",
             "schema": {
-              "$ref": "#/definitions/Pet"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
+              "$ref": "OrderFulfillmentRequest"
             }
           }
-        }
+        },
+        "x-event-name": "OrdersApi_GetOrders"
       }
     },
-    "/pets/{id}": {
+    "/{version}/commerce/orders/{id}": {
       "get": {
-        "description": "Returns a user based on a single ID, if the user does not have access to the pet",
-        "operationId": "findPetById",
-        "produces": [
-          "application/json",
-          "application/xml",
-          "text/xml",
-          "text/html"
+        "tags": [
+          "Orders"
         ],
+        "summary": "Get one Order",
+        "description": "Get one Order",
+        "operationId": "getOrder",
         "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
-            "description": "ID of pet to fetch",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "pet response",
+            "description": "Return one Order",
             "schema": {
-              "$ref": "#/definitions/Pet"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
+              "$ref": "Order"
             }
           }
-        }
-      },
-      "delete": {
-        "description": "deletes a single pet based on the ID supplied",
-        "operationId": "deletePet",
+        },
+        "x-event-name": "OrdersApi_GetOneOrder"
+      }
+    },
+    "/{version}/commerce/orders/{id}/fulfillments": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Fulfill an Order",
+        "operationId": "fulfillOrder",
         "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
-            "description": "ID of pet to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "fulfillmentRequest",
+            "required": false,
+            "schema": {
+              "$ref": "OrderFulfillmentRequest"
+            }
           }
         ],
         "responses": {
-          "204": {
-            "description": "pet deleted"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
+          "200": {
+            "description": "The Order was successfully fulfilled."
           }
-        }
+        },
+        "x-event-name": "OrdersApi_FulfillOrder"
       }
     }
   },
   "definitions": {
-    "Pet": {
+    "MemberProfile": {
       "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/NewPet"
-        },
-        {
-          "required": [
-            "id"
-          ],
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        }
-      ]
-    },
-    "NewPet": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "WebsiteProfile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "siteId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "measurementStandard": {
+          "$ref": "MeasurementStandard"
+        },
+        "language": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "Location"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "OrderListResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "Order"
+          }
+        },
+        "pagination": {
+          "$ref": "#PaginationDetails"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "orderNumber": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "testmode": {
+          "type": "boolean"
+        },
+        "customerEmail": {
+          "type": "string"
+        },
+        "billingAddress": {
+          "$ref": "Address"
+        },
+        "shippingAddress": {
+          "$ref": "Address"
+        },
+        "fulfillmentStatus": {
+          "type": "string",
+          "enum": ["PENDING", "FULFILLED", "CANCELED"]
+        },
+        "lineItems": {
+          "type": "array",
+          "items": {
+            "$ref": "LineItem"
+          }
+        },
+        "internalNotes": {
+          "type": "array",
+          "items": {
+            "$ref": "OrderNote"
+          }
+        },
+        "shippingLines": {
+          "type": "array",
+          "items": {
+            "$ref": "ShippingLine"
+          }
+        },
+        "discountLines": {
+          "type": "array",
+          "items": {
+            "$ref": "DiscountLine"
+          }
+        },
+        "formSubmission": {
+          "type": "array",
+          "items": {
+            "$ref": "FormItem"
+          }
+        },
+        "fulfillments": {
+          "type": "array",
+          "items": {
+            "$ref": "Fulfillment"
+          }
+        },
+        "subtotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "shippingTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "discountTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "taxTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "refundedTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "grandTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "channelName": {
+          "type": "string"
+        },
+        "externalOrderReference": {
+          "type": "string"
+        },
+        "fulfilledOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "priceTaxInterpretation": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "Address": {
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "LineItem": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "variantId": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "unitPricePaid": {
+          "$ref": "MonetaryAmount"
+        },
+        "variantOptions": {
+          "type": "array",
+          "items": {
+            "$ref": "VariantOption"
+          }
+        },
+        "customizations": {
+          "type": "array",
+          "items": {
+            "$ref": "FormItem"
+          }
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "lineItemType": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "OrderNote": {
+      "properties": {
+        "content": {
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ShippingLine": {
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "The delivery method selected, e.g. \"UPS Ground\""
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "DiscountLine": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the promotion"
+        },
+        "description": {
+          "type": "string",
+          "description": "A plain-English description of the promotion."
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "promoCode": {
+          "type": "string",
+          "description": "(Optional) the user-entered promo code that triggered the discount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "VariantOption": {
+      "properties": {
+        "optionName": {
+          "type": "string",
+          "description": "The name of the option (e.g. color, size, material)"
+        },
+        "value": {
+          "type": "string",
+          "description": "The shopper-selected value for the option (e.g. red, small, cotton)"
+        }
+      },
+      "description": "A product variant option chosen by a shopper (e.g. red + small)",
+      "x-model-type": "builder"
+    },
+    "FormItem": {
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "The name of the form field"
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the field, as entered by the shopper"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "Fulfillment": {
+      "properties": {
+        "shipDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The ISO 8601 date and time representing the moment the shipment occurred"
+        },
+        "carrierName": {
+          "type": "string",
+          "description": "The shipping carrier, e.g. \"FedEx\", \"USPS\", etc."
+        },
+        "service": {
+          "type": "string",
+          "description": "A string representing the level of service, as offered by the carrier, used for this shipment"
+        },
+        "trackingNumber": {
+          "type": "string",
+          "description": "The carrier-generated tracking number"
+        },
+        "trackingUrl": {
+          "type": "string",
+          "description": "The url supplied by the carrier to track the given shipment."
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductVariant": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "pricing": {
+          "$ref": "ProductPricing"
+        },
+        "stock": {
+          "$ref": "ProductStock"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {}
+        },
+        "shippingMeasurements": {
+          "$ref": "ProductMeasurements"
+        },
+        "image": {
+          "$ref": "ProductImage"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductMeasurements": {
+      "properties": {
+        "weight": {
+          "$ref": "ProductWeight"
+        },
+        "dimensions": {
+          "$ref": "ProductDimensions"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductDimensions": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "$ref": "ProductDimensionsUnit"
+        },
+        "length": {
+          "type": "number",
+          "format": "float",
+          "x-boxed": true
+        },
+        "width": {
+          "type": "number",
+          "format": "float",
+          "x-boxed": true
+        },
+        "height": {
+          "type": "number",
+          "format": "float",
+          "x-boxed": true
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductDimensionsUnit": {
+      "type": "string",
+      "enum": ["CENTIMETER", "INCH"]
+    },
+    "ProductStock": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "integer"
+        },
+        "unlimited": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductType": {
+      "type": "string",
+      "enum": ["PHYSICAL"]
+    },
+    "CreateProductVariantRequest": {
+      "properties": {
+        "sku": {
+          "type": "string"
+        },
+        "pricing": {
+          "$ref": "ProductPricing"
+        },
+        "stock": {
+          "$ref": "ProductStock"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "shippingMeasurements": {
+          "$ref": "ProductMeasurements"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductSize": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "length": {
+          "type": "number",
+          "format": "float"
+        },
+        "width": {
+          "type": "number",
+          "format": "float"
+        },
+        "height": {
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductPricing": {
+      "properties": {
+        "basePrice": {
+          "$ref": "MonetaryAmount"
+        },
+        "salePrice": {
+          "$ref": "MonetaryAmount"
+        },
+        "onSale": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginatedProductListResponse": {
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "Product"
+          }
+        },
+        "pagination": {
+          "$ref": "PaginationDetails"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateProductRequest": {
+      "properties": {
+        "type": {
+          "$ref": "ProductType"
+        },
+        "productsPageId": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },
-        "tag": {
+        "description": {
+          "type": "string"
+        },
+        "urlSlug": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isVisible": {
+          "type": "boolean"
+        },
+        "variantAttributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateProductVariantRequest"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductImage": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "originalSize": {
+          "type": "object",
+          "properties": {}
+        },
+        "availableFormats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductImageProcessingStatus": {
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "ImageProcessingStatus"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "UploadProductImageResponse": {
+      "properties": {
+        "imageId": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "SeoOptions": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductListResponseBetaV1": {
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductBetaV1"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductWeightBetaV1": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductDimensionsBetaV1": {
+      "properties": {
+        "weight": {
+          "$ref": "ProductWeightBetaV1"
+        },
+        "size": {
+          "$ref": "ProductSize"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductBetaV1": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "ProductType"
+        },
+        "productPageId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "urlSlug": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductImage"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isVisible": {
+          "type": "boolean"
+        },
+        "variantAttributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductVariantBetaV1"
+          }
+        },
+        "seoOptions": {
+          "$ref": "SeoOptions"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginatedProductListResponseBetaV1": {
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductBetaV1"
+          }
+        },
+        "pagination": {
+          "$ref": "PaginationDetails"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductVariantBetaV1": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "pricing": {
+          "$ref": "ProductPricing"
+        },
+        "stock": {
+          "$ref": "ProductStock"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {}
+        },
+        "shippingDimensions": {
+          "$ref": "ProductDimensionsBetaV1"
+        },
+        "image": {
+          "$ref": "ProductImage"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductListResponse": {
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "Product"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductWeight": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "$ref": "ProductWeightUnit"
+        },
+        "value": {
+          "type": "number",
+          "format": "float",
+          "x-boxed": true
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductWeightUnit": {
+      "type": "string",
+      "enum": ["KILOGRAM", "POUND"]
+    },
+    "Product": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "ProductType"
+        },
+        "productsPageId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "urlSlug": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductImage"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isVisible": {
+          "type": "boolean"
+        },
+        "variantAttributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductVariant"
+          }
+        },
+        "seoOptions": {
+          "$ref": "SeoOptions"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "IsRegisteredResponse": {
+      "properties": {
+        "isRegistered": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "RegisterProviderRequest": {
+      "properties": {
+        "credentials": {
+          "$ref": "ProviderCredentials"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProviderType": {
+      "type": "string",
+      "enum": ["TAX_CHECKOUT"]
+    },
+    "ProviderCredentials": {
+      "properties": {
+        "credentialsType": {
+          "$ref": "ProviderCredentialsType"
+        },
+        "token": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProviderCredentialsType": {
+      "type": "string",
+      "enum": ["API_KEY"]
+    },
+    "ImageProcessingStatus": {
+      "type": "string",
+      "enum": ["QUEUED", "PROCESSING", "READY", "ERROR"]
+    },
+    "TransactionTax": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "rate": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionDocument": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customerEmail": {
+          "type": "string"
+        },
+        "salesOrderId": {
+          "type": "string"
+        },
+        "voided": {
+          "type": "boolean"
+        },
+        "totalSales": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalNetSales": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalNetShipping": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalTaxes": {
+          "$ref": "MonetaryAmount"
+        },
+        "total": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalNetPayment": {
+          "$ref": "MonetaryAmount"
+        },
+        "payments": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionPayment"
+          }
+        },
+        "salesLineItems": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionSalesLineItem"
+          }
+        },
+        "discounts": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionDiscount"
+          }
+        },
+        "shippingLineItems": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionShippingLineItem"
+          }
+        },
+        "paymentGatewayError": {
+          "type": "string",
+          "enum": ["GATEWAY_FEE_PROCEESING_ERROR", "GATEWAY_API_PERMISSION_ERROR", "GATEWAY_DISCONNNECTED"]
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionListResponse": {
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionDocument"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ExternalTransactionProperty": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
           "type": "string"
         }
       }
     },
-    "ErrorModel": {
+    "TransactionRefund": {
       "type": "object",
-      "required": [
-        "code",
-        "message"
-      ],
       "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
+        "id": {
+          "type": "string"
         },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "refundedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "externalTransactionId": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionDiscount": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionPayment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "refundedAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "netAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "creditCardType": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "refunds": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionRefund"
+          }
+        },
+        "processingFees": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionProcessingFee"
+          }
+        },
+        "giftCardId": {
+          "type": "string"
+        },
+        "paidOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "externalTransactionId": {
+          "type": "string"
+        },
+        "externalTransactionProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "ExternalTransactionProperty"
+          }
+        },
+        "externalCustomerId": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginatedTransactionListResponse": {
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionDocument"
+          }
+        },
+        "pagination": {
+          "$ref": "PaginationDetails"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionShippingLineItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "discountAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "netAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "description": {
+          "type": "string"
+        },
+        "taxes": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionTax"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionProcessingFee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "amountGatewayCurrency": {
+          "$ref": "MonetaryAmount"
+        },
+        "exchangeRate": {
+          "type": "number"
+        },
+        "refundedAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "refundedAmountGatewayCurrency": {
+          "$ref": "MonetaryAmount"
+        },
+        "netAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "netAmountGatewayCurrency": {
+          "$ref": "MonetaryAmount"
+        },
+        "feeRefunds": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionProcessingFeeRefund"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionSalesLineItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "discountAmount": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalSales": {
+          "$ref": "MonetaryAmount"
+        },
+        "totalNetSales": {
+          "$ref": "MonetaryAmount"
+        },
+        "total": {
+          "$ref": "MonetaryAmount"
+        },
+        "taxes": {
+          "type": "array",
+          "items": {
+            "$ref": "TransactionTax"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TransactionProcessingFeeRefund": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        },
+        "amountGatewayCurrency": {
+          "$ref": "MonetaryAmount"
+        },
+        "exchangeRate": {
+          "type": "number"
+        },
+        "refundedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "externalTransactionId": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "MeasurementStandard": {
+      "type": "string",
+      "enum": ["IMPERIAL", "METRIC"]
+    },
+    "InventoryItemListResponse": {
+      "properties": {
+        "inventory": {
+          "type": "array",
+          "items": {
+            "$ref": "InventoryItem"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "InventoryQuantityExpression": {
+      "type": "object",
+      "properties": {
+        "variantId": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer",
+          "x-boxed": true
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "InventoryItem": {
+      "properties": {
+        "variantId": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "descriptor": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "isUnlimited": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateInventoryAdjustmentRequest": {
+      "type": "object",
+      "properties": {
+        "incrementOperations": {
+          "type": "array",
+          "items": {
+            "$ref": "InventoryQuantityExpression"
+          }
+        },
+        "decrementOperations": {
+          "type": "array",
+          "items": {
+            "$ref": "InventoryQuantityExpression"
+          }
+        },
+        "setFiniteOperations": {
+          "type": "array",
+          "items": {
+            "$ref": "InventoryQuantityExpression"
+          }
+        },
+        "setUnlimitedOperations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginatedInventoryItemListResponse": {
+      "properties": {
+        "inventory": {
+          "type": "array",
+          "items": {
+            "$ref": "InventoryItem"
+          }
+        },
+        "pagination": {
+          "$ref": "PaginationDetails"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginatedProductsPagesResponse": {
+      "properties": {
+        "pagination": {
+          "$ref": "PaginationDetails"
+        },
+        "productsPages": {
+          "type": "array",
+          "items": {
+            "$ref": "ProductsPage"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "ProductsPage": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "PaginationDetails": {
+      "type": "object",
+      "properties": {
+        "nextPageUrl": {
+          "type": "string"
+        },
+        "nextPageCursor": {
+          "type": "string"
+        },
+        "hasNextPage": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "OrderFulfillmentRequest": {
+      "properties": {
+        "shouldSendNotification": {
+          "type": "boolean"
+        },
+        "shipments": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateOrderShipmentRequest"
+          }
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateAddressRequest": {
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateOrderRequest": {
+      "properties": {
+        "channelName": {
+          "type": "string"
+        },
+        "externalOrderReference": {
+          "type": "string"
+        },
+        "customerEmail": {
+          "type": "string"
+        },
+        "billingAddress": {
+          "$ref": "CreateAddressRequest"
+        },
+        "shippingAddress": {
+          "$ref": "CreateAddressRequest"
+        },
+        "lineItems": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateLineItemRequest"
+          }
+        },
+        "shippingLines": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateShippingLineRequest"
+          }
+        },
+        "discountLines": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateDiscountLineRequest"
+          }
+        },
+        "subtotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "shippingTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "discountTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "taxTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "priceTaxInterpretation": {
+          "$ref": "TaxInterpretation"
+        },
+        "grandTotal": {
+          "$ref": "MonetaryAmount"
+        },
+        "fulfillmentStatus": {
+          "$ref": "OrderCreateFulfillmentStatus"
+        },
+        "fulfillments": {
+          "type": "array",
+          "items": {
+            "$ref": "CreateOrderShipmentRequest"
+          }
+        },
+        "fulfilledOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sendShopperFulfillmentNotification": {
+          "type": "boolean"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "shouldDeductInventory": {
+          "type": "boolean"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateLineItemRequest": {
+      "properties": {
+        "lineItemType": {
+          "$ref": "OrderCreateLineItemType"
+        },
+        "variantId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "unitPricePaid": {
+          "$ref": "MonetaryAmount"
+        },
+        "nonSaleUnitPrice": {
+          "$ref": "MonetaryAmount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "CreateShippingLineRequest": {
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "LineItemType": {
+      "type": "string",
+      "enum": ["PHYSICAL_PRODUCT", "CUSTOM", "DIGITAL_PRODUCT", "SERVICE", "GIFT_CARD", "PAYWALL_PRODUCT"]
+    },
+    "OrderCreateFulfillmentStatus": {
+      "type": "string",
+      "enum": ["PENDING", "FULFILLED"]
+    },
+    "CreateDiscountLineRequest": {
+      "properties": {
+        "promoCode": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "MonetaryAmount"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "TaxInterpretation": {
+      "type": "string",
+      "enum": ["INCLUSIVE", "EXCLUSIVE"]
+    },
+    "OrderCreateLineItemType": {
+      "type": "string",
+      "enum": ["PHYSICAL_PRODUCT", "CUSTOM"]
+    },
+    "CreateOrderShipmentRequest": {
+      "properties": {
+        "shipDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "carrierName": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "trackingNumber": {
+          "type": "string"
+        },
+        "trackingUrl": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "FormSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "WebsiteSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "canonicalUrl": {
+          "type": "string"
+        }
+      },
+      "x-model-type": "builder"
+    },
+    "FormFieldDescription": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "unicode, int, or bool",
+          "$ref": "FormFieldValueType"
+        },
+        "key": {
+          "type": "string",
+          "description": "the key in the form submission data"
+        },
+        "label": {
+          "type": "string",
+          "description": "the human-readable label to display"
+        }
+      },
+      "description": "follows Zapier format found here https://zapier.com/developer/documentation/v2/trigger-fields-custom/",
+      "x-model-type": "builder"
+    },
+    "FormFieldValueType": {
+      "type": "string",
+      "enum": ["UNICODE", "INT", "BOOL"]
+    },
+    "FireDrillResponseType": {
+      "type": "string",
+      "description": "The type of HTTP response to return",
+      "enum": ["OK_200", "INTERNAL_SERVER_ERROR_500", "SERVICE_UNAVAILABLE_503"]
+    },
+    "FireDrillResponse": {
+      "type": "object",
+      "properties": {
         "message": {
           "type": "string"
         }
-      }
+      },
+      "x-model-type": "builder"
     }
   }
 }
