@@ -136,7 +136,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Specifies the Order to update."
           },
           {
             "in": "body",
@@ -1639,13 +1640,15 @@
     "OrderFulfillmentRequest": {
       "properties": {
         "shouldSendNotification": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Indicates whether the customer should receive an email notification about the added shipments."
         },
         "shipments": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/CreateOrderShipmentRequest"
-          }
+          },
+          "description": "Array of shipment data."
         }
       },
       "x-model-type": "builder"
@@ -1829,7 +1832,8 @@
       "properties": {
         "shipDate": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "ISO 8601 UTC date and time string. Represents the moment the shipment occurred."
         },
         "carrierName": {
           "type": "string"
