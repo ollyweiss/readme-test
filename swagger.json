@@ -64,7 +64,7 @@
           "200": {
             "description": "Return a list of Orders",
             "schema": {
-              "$ref": "#definitions/OrderFulfillmentRequest"
+              "$ref": "#/definitions/OrderFulfillmentRequest"
             }
           }
         },
@@ -97,7 +97,7 @@
           "200": {
             "description": "Return one Order",
             "schema": {
-              "$ref": "#definitions/Order"
+              "$ref": "#/definitions/Order"
             }
           }
         },
@@ -129,7 +129,7 @@
             "name": "fulfillmentRequest",
             "required": false,
             "schema": {
-              "$ref": "#definitions/OrderFulfillmentRequest"
+              "$ref": "#/definitions/OrderFulfillmentRequest"
             }
           }
         ],
@@ -180,7 +180,7 @@
           "type": "string"
         },
         "measurementStandard": {
-          "$ref": "#definitions/MeasurementStandard"
+          "$ref": "#/definitions/MeasurementStandard"
         },
         "language": {
           "type": "string"
@@ -189,7 +189,7 @@
           "type": "string"
         },
         "location": {
-          "$ref": "#definitions/Location"
+          "$ref": "#/definitions/Location"
         }
       },
       "x-model-type": "builder"
@@ -212,11 +212,11 @@
         "result": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/Order"
+            "$ref": "#/definitions/Order"
           }
         },
         "pagination": {
-          "$ref": "#definitions/#PaginationDetails"
+          "$ref": "#/definitions/#PaginationDetails"
         }
       },
       "x-model-type": "builder"
@@ -248,10 +248,10 @@
           "type": "string"
         },
         "billingAddress": {
-          "$ref": "#definitions/Address"
+          "$ref": "#/definitions/Address"
         },
         "shippingAddress": {
-          "$ref": "#definitions/Address"
+          "$ref": "#/definitions/Address"
         },
         "fulfillmentStatus": {
           "type": "string",
@@ -260,56 +260,56 @@
         "lineItems": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/LineItem"
+            "$ref": "#/definitions/LineItem"
           }
         },
         "internalNotes": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/OrderNote"
+            "$ref": "#/definitions/OrderNote"
           }
         },
         "shippingLines": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ShippingLine"
+            "$ref": "#/definitions/ShippingLine"
           }
         },
         "discountLines": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/DiscountLine"
+            "$ref": "#/definitions/DiscountLine"
           }
         },
         "formSubmission": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/FormItem"
+            "$ref": "#/definitions/FormItem"
           }
         },
         "fulfillments": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/Fulfillment"
+            "$ref": "#/definitions/Fulfillment"
           }
         },
         "subtotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "shippingTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "discountTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "taxTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "refundedTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "grandTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "channelName": {
           "type": "string"
@@ -380,18 +380,18 @@
           "type": "integer"
         },
         "unitPricePaid": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "variantOptions": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/VariantOption"
+            "$ref": "#/definitions/VariantOption"
           }
         },
         "customizations": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/FormItem"
+            "$ref": "#/definitions/FormItem"
           }
         },
         "imageUrl": {
@@ -419,7 +419,7 @@
           "description": "The delivery method selected, e.g. \"UPS Ground\""
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         }
       },
       "x-model-type": "builder"
@@ -435,7 +435,7 @@
           "description": "A plain-English description of the promotion."
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "promoCode": {
           "type": "string",
@@ -506,20 +506,20 @@
           "type": "string"
         },
         "pricing": {
-          "$ref": "#definitions/ProductPricing"
+          "$ref": "#/definitions/ProductPricing"
         },
         "stock": {
-          "$ref": "#definitions/ProductStock"
+          "$ref": "#/definitions/ProductStock"
         },
         "attributes": {
           "type": "object",
           "properties": {}
         },
         "shippingMeasurements": {
-          "$ref": "#definitions/ProductMeasurements"
+          "$ref": "#/definitions/ProductMeasurements"
         },
         "image": {
-          "$ref": "#definitions/ProductImage"
+          "$ref": "#/definitions/ProductImage"
         }
       },
       "x-model-type": "builder"
@@ -527,10 +527,10 @@
     "ProductMeasurements": {
       "properties": {
         "weight": {
-          "$ref": "#definitions/ProductWeight"
+          "$ref": "#/definitions/ProductWeight"
         },
         "dimensions": {
-          "$ref": "#definitions/ProductDimensions"
+          "$ref": "#/definitions/ProductDimensions"
         }
       },
       "x-model-type": "builder"
@@ -539,7 +539,7 @@
       "type": "object",
       "properties": {
         "unit": {
-          "$ref": "#definitions/ProductDimensionsUnit"
+          "$ref": "#/definitions/ProductDimensionsUnit"
         },
         "length": {
           "type": "number",
@@ -585,10 +585,10 @@
           "type": "string"
         },
         "pricing": {
-          "$ref": "#definitions/ProductPricing"
+          "$ref": "#/definitions/ProductPricing"
         },
         "stock": {
-          "$ref": "#definitions/ProductStock"
+          "$ref": "#/definitions/ProductStock"
         },
         "attributes": {
           "type": "object",
@@ -597,7 +597,7 @@
           }
         },
         "shippingMeasurements": {
-          "$ref": "#definitions/ProductMeasurements"
+          "$ref": "#/definitions/ProductMeasurements"
         }
       },
       "x-model-type": "builder"
@@ -626,10 +626,10 @@
     "ProductPricing": {
       "properties": {
         "basePrice": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "salePrice": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "onSale": {
           "type": "boolean"
@@ -642,11 +642,11 @@
         "products": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/Product"
+            "$ref": "#/definitions/Product"
           }
         },
         "pagination": {
-          "$ref": "#definitions/PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         }
       },
       "x-model-type": "builder"
@@ -654,7 +654,7 @@
     "CreateProductRequest": {
       "properties": {
         "type": {
-          "$ref": "#definitions/ProductType"
+          "$ref": "#/definitions/ProductType"
         },
         "productsPageId": {
           "type": "string"
@@ -686,7 +686,7 @@
         "variants": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateProductVariantRequest"
+            "$ref": "#/definitions/CreateProductVariantRequest"
           }
         }
       },
@@ -719,7 +719,7 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#definitions/ImageProcessingStatus"
+          "$ref": "#/definitions/ImageProcessingStatus"
         }
       },
       "x-model-type": "builder"
@@ -748,7 +748,7 @@
         "products": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductBetaV1"
+            "$ref": "#/definitions/ProductBetaV1"
           }
         }
       },
@@ -770,10 +770,10 @@
     "ProductDimensionsBetaV1": {
       "properties": {
         "weight": {
-          "$ref": "#definitions/ProductWeightBetaV1"
+          "$ref": "#/definitions/ProductWeightBetaV1"
         },
         "size": {
-          "$ref": "#definitions/ProductSize"
+          "$ref": "#/definitions/ProductSize"
         }
       },
       "x-model-type": "builder"
@@ -784,7 +784,7 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#definitions/ProductType"
+          "$ref": "#/definitions/ProductType"
         },
         "productPageId": {
           "type": "string"
@@ -804,7 +804,7 @@
         "images": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductImage"
+            "$ref": "#/definitions/ProductImage"
           }
         },
         "tags": {
@@ -825,11 +825,11 @@
         "variants": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductVariantBetaV1"
+            "$ref": "#/definitions/ProductVariantBetaV1"
           }
         },
         "seoOptions": {
-          "$ref": "#definitions/SeoOptions"
+          "$ref": "#/definitions/SeoOptions"
         },
         "createdOn": {
           "type": "string",
@@ -847,11 +847,11 @@
         "products": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductBetaV1"
+            "$ref": "#/definitions/ProductBetaV1"
           }
         },
         "pagination": {
-          "$ref": "#definitions/PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         }
       },
       "x-model-type": "builder"
@@ -865,20 +865,20 @@
           "type": "string"
         },
         "pricing": {
-          "$ref": "#definitions/ProductPricing"
+          "$ref": "#/definitions/ProductPricing"
         },
         "stock": {
-          "$ref": "#definitions/ProductStock"
+          "$ref": "#/definitions/ProductStock"
         },
         "attributes": {
           "type": "object",
           "properties": {}
         },
         "shippingDimensions": {
-          "$ref": "#definitions/ProductDimensionsBetaV1"
+          "$ref": "#/definitions/ProductDimensionsBetaV1"
         },
         "image": {
-          "$ref": "#definitions/ProductImage"
+          "$ref": "#/definitions/ProductImage"
         }
       },
       "x-model-type": "builder"
@@ -888,7 +888,7 @@
         "products": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/Product"
+            "$ref": "#/definitions/Product"
           }
         }
       },
@@ -898,7 +898,7 @@
       "type": "object",
       "properties": {
         "unit": {
-          "$ref": "#definitions/ProductWeightUnit"
+          "$ref": "#/definitions/ProductWeightUnit"
         },
         "value": {
           "type": "number",
@@ -918,7 +918,7 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#definitions/ProductType"
+          "$ref": "#/definitions/ProductType"
         },
         "productsPageId": {
           "type": "string"
@@ -938,7 +938,7 @@
         "images": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductImage"
+            "$ref": "#/definitions/ProductImage"
           }
         },
         "tags": {
@@ -959,11 +959,11 @@
         "variants": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductVariant"
+            "$ref": "#/definitions/ProductVariant"
           }
         },
         "seoOptions": {
-          "$ref": "#definitions/SeoOptions"
+          "$ref": "#/definitions/SeoOptions"
         },
         "createdOn": {
           "type": "string",
@@ -987,7 +987,7 @@
     "RegisterProviderRequest": {
       "properties": {
         "credentials": {
-          "$ref": "#definitions/ProviderCredentials"
+          "$ref": "#/definitions/ProviderCredentials"
         }
       },
       "x-model-type": "builder"
@@ -999,7 +999,7 @@
     "ProviderCredentials": {
       "properties": {
         "credentialsType": {
-          "$ref": "#definitions/ProviderCredentialsType"
+          "$ref": "#/definitions/ProviderCredentialsType"
         },
         "token": {
           "type": "string"
@@ -1019,7 +1019,7 @@
       "type": "object",
       "properties": {
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "rate": {
           "type": "string"
@@ -1057,45 +1057,45 @@
           "type": "boolean"
         },
         "totalSales": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalNetSales": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalNetShipping": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalTaxes": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "total": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalNetPayment": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "payments": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionPayment"
+            "$ref": "#/definitions/TransactionPayment"
           }
         },
         "salesLineItems": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionSalesLineItem"
+            "$ref": "#/definitions/TransactionSalesLineItem"
           }
         },
         "discounts": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionDiscount"
+            "$ref": "#/definitions/TransactionDiscount"
           }
         },
         "shippingLineItems": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionShippingLineItem"
+            "$ref": "#/definitions/TransactionShippingLineItem"
           }
         },
         "paymentGatewayError": {
@@ -1110,7 +1110,7 @@
         "documents": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionDocument"
+            "$ref": "#/definitions/TransactionDocument"
           }
         }
       },
@@ -1134,7 +1134,7 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "refundedOn": {
           "type": "string",
@@ -1156,7 +1156,7 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         }
       },
       "x-model-type": "builder"
@@ -1168,13 +1168,13 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "refundedAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "netAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "creditCardType": {
           "type": "string"
@@ -1185,13 +1185,13 @@
         "refunds": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionRefund"
+            "$ref": "#/definitions/TransactionRefund"
           }
         },
         "processingFees": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionProcessingFee"
+            "$ref": "#/definitions/TransactionProcessingFee"
           }
         },
         "giftCardId": {
@@ -1207,7 +1207,7 @@
         "externalTransactionProperties": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ExternalTransactionProperty"
+            "$ref": "#/definitions/ExternalTransactionProperty"
           }
         },
         "externalCustomerId": {
@@ -1221,11 +1221,11 @@
         "documents": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionDocument"
+            "$ref": "#/definitions/TransactionDocument"
           }
         },
         "pagination": {
-          "$ref": "#definitions/PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         }
       },
       "x-model-type": "builder"
@@ -1237,13 +1237,13 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "discountAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "netAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "description": {
           "type": "string"
@@ -1251,7 +1251,7 @@
         "taxes": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionTax"
+            "$ref": "#/definitions/TransactionTax"
           }
         }
       },
@@ -1264,30 +1264,30 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "amountGatewayCurrency": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "exchangeRate": {
           "type": "number"
         },
         "refundedAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "refundedAmountGatewayCurrency": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "netAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "netAmountGatewayCurrency": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "feeRefunds": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionProcessingFeeRefund"
+            "$ref": "#/definitions/TransactionProcessingFeeRefund"
           }
         }
       },
@@ -1300,21 +1300,21 @@
           "type": "string"
         },
         "discountAmount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalSales": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "totalNetSales": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "total": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "taxes": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/TransactionTax"
+            "$ref": "#/definitions/TransactionTax"
           }
         }
       },
@@ -1327,10 +1327,10 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "amountGatewayCurrency": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "exchangeRate": {
           "type": "number"
@@ -1354,7 +1354,7 @@
         "inventory": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/InventoryItem"
+            "$ref": "#/definitions/InventoryItem"
           }
         }
       },
@@ -1399,19 +1399,19 @@
         "incrementOperations": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/InventoryQuantityExpression"
+            "$ref": "#/definitions/InventoryQuantityExpression"
           }
         },
         "decrementOperations": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/InventoryQuantityExpression"
+            "$ref": "#/definitions/InventoryQuantityExpression"
           }
         },
         "setFiniteOperations": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/InventoryQuantityExpression"
+            "$ref": "#/definitions/InventoryQuantityExpression"
           }
         },
         "setUnlimitedOperations": {
@@ -1428,11 +1428,11 @@
         "inventory": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/InventoryItem"
+            "$ref": "#/definitions/InventoryItem"
           }
         },
         "pagination": {
-          "$ref": "#definitions/PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         }
       },
       "x-model-type": "builder"
@@ -1440,12 +1440,12 @@
     "PaginatedProductsPagesResponse": {
       "properties": {
         "pagination": {
-          "$ref": "#definitions/PaginationDetails"
+          "$ref": "#/definitions/PaginationDetails"
         },
         "productsPages": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/ProductsPage"
+            "$ref": "#/definitions/ProductsPage"
           }
         }
       },
@@ -1488,7 +1488,7 @@
         "shipments": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateOrderShipmentRequest"
+            "$ref": "#/definitions/CreateOrderShipmentRequest"
           }
         }
       },
@@ -1538,54 +1538,54 @@
           "type": "string"
         },
         "billingAddress": {
-          "$ref": "#definitions/CreateAddressRequest"
+          "$ref": "#/definitions/CreateAddressRequest"
         },
         "shippingAddress": {
-          "$ref": "#definitions/CreateAddressRequest"
+          "$ref": "#/definitions/CreateAddressRequest"
         },
         "lineItems": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateLineItemRequest"
+            "$ref": "#/definitions/CreateLineItemRequest"
           }
         },
         "shippingLines": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateShippingLineRequest"
+            "$ref": "#/definitions/CreateShippingLineRequest"
           }
         },
         "discountLines": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateDiscountLineRequest"
+            "$ref": "#/definitions/CreateDiscountLineRequest"
           }
         },
         "subtotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "shippingTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "discountTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "taxTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "priceTaxInterpretation": {
-          "$ref": "#definitions/TaxInterpretation"
+          "$ref": "#/definitions/TaxInterpretation"
         },
         "grandTotal": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "fulfillmentStatus": {
-          "$ref": "#definitions/OrderCreateFulfillmentStatus"
+          "$ref": "#/definitions/OrderCreateFulfillmentStatus"
         },
         "fulfillments": {
           "type": "array",
           "items": {
-            "$ref": "#definitions/CreateOrderShipmentRequest"
+            "$ref": "#/definitions/CreateOrderShipmentRequest"
           }
         },
         "fulfilledOn": {
@@ -1608,7 +1608,7 @@
     "CreateLineItemRequest": {
       "properties": {
         "lineItemType": {
-          "$ref": "#definitions/OrderCreateLineItemType"
+          "$ref": "#/definitions/OrderCreateLineItemType"
         },
         "variantId": {
           "type": "string"
@@ -1620,10 +1620,10 @@
           "type": "integer"
         },
         "unitPricePaid": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         },
         "nonSaleUnitPrice": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         }
       },
       "x-model-type": "builder"
@@ -1634,7 +1634,7 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         }
       },
       "x-model-type": "builder"
@@ -1656,7 +1656,7 @@
           "type": "string"
         },
         "amount": {
-          "$ref": "#definitions/MonetaryAmount"
+          "$ref": "#/definitions/MonetaryAmount"
         }
       },
       "x-model-type": "builder"
@@ -1722,7 +1722,7 @@
       "properties": {
         "type": {
           "description": "unicode, int, or bool",
-          "$ref": "#definitions/FormFieldValueType"
+          "$ref": "#/definitions/FormFieldValueType"
         },
         "key": {
           "type": "string",
