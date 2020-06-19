@@ -1829,7 +1829,7 @@
       "enum": ["PHYSICAL_PRODUCT", "CUSTOM"]
     },
     "CreateOrderShipmentRequest": {
-      "required": ["shipDate"],
+      "required": ["shipDate", "carrierName", "service", "trackingNumber"],
       "properties": {
         "shipDate": {
           "type": "string",
@@ -1837,16 +1837,20 @@
           "description": "ISO 8601 UTC date and time string. Represents the moment the shipment occurred."
         },
         "carrierName": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the carrier handling the shipment."
         },
         "service": {
-          "type": "string"
+          "type": "string",
+          "description": "Carrier`s level of service for shipping."
         },
         "trackingNumber": {
-          "type": "string"
+          "type": "string",
+          "description": "Carrier`s parcel tracking number."
         },
         "trackingUrl": {
-          "type": "string"
+          "type": "string",
+          "description": "URL provided by carrier to track the shipment; must adhere to valid URL formatting."
         }
       },
       "x-model-type": "builder"
